@@ -1,0 +1,15 @@
+{
+	"recommendations": [
+		"arifbudimanar.arifcode-theme",
+		"vivaxy.vscode-conventional-commits",
+		"vunguyentuan.vscode-css-variables",
+		"eamodio.gitlens",
+		"VisualStudioExptTeam.vscodeintellicode",
+		"christian-kohler.path-intellisense",
+		"esbenp.prettier-vscode",
+		"fivethree.vscode-svelte-snippets",
+		"svelte.svelte-vscode",
+		"ardenivanov.svelte-intellisense",
+		"meganrogge.template-string-converter"
+	]
+}
