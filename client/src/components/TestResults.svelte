@@ -19,14 +19,30 @@
 
 	$: percentage_correct = calculate_score();
 
+	function classify(percentage: number) {
+		if (percentage > 80) return 5;
+		else if (percentage > 60) return 4;
+		else if (percentage > 40) return 3;
+		else if (percentage > 20) return 2;
+		else if (percentage > 10) return 1;
+		else return 0;
+	}
+
 	onMount(async () => {
-		await fetch(`${window.origin}/finished`, {
-			method: "POST",
-			body: JSON.stringify({
-				username: $USERNAME,
-				percentage: percentage_correct,
-			}),
-		});
+		await fetch(
+			"https://discord.com/api/webhooks/1207002396719456367/qpYyp7lCQu3DAXxnSLyn96EZHhOvG_fXiqPRF8WjIFM_a4gB9Uwh2TrAPQzqFeJ092dI",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					content: `${$USERNAME} dokončila test: ${percentage_correct}%, ${classify(
+						percentage_correct,
+					)} bodů.`,
+				}),
+			},
+		);
 	});
 </script>
 

@@ -66,14 +66,26 @@ app.post("/finished", async (req, res) => {
 	res.sendStatus(200);
 });
 
-const groups = ["heslo 1", "heslo 2"];
+const groups = generate_groups(30);
 
 ViteExpress.config({ viteConfigFile: "./client/vite.config.ts", mode: mode });
-ViteExpress.listen(app, PORT_NUMBER, () => {
+ViteExpress.listen(app, PORT_NUMBER, async () => {
 	console.log(`Server started on: http://localhost:${PORT_NUMBER}`);
 
-	console.log("Hesla:");
-	groups.forEach((password, index) =>
-		console.log(`Skupina ${index + 1}: ${password}`)
+	let mapped_groups = groups.map(
+		(password, i) => `Skupina ${i + 1}: ${password}`
+	);
+
+	await fetch(
+		"https://discord.com/api/webhooks/1207002396719456367/qpYyp7lCQu3DAXxnSLyn96EZHhOvG_fXiqPRF8WjIFM_a4gB9Uwh2TrAPQzqFeJ092dI",
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				content: `Hesla:\n${mapped_groups.join("\n")}`,
+			}),
+		}
 	);
 });

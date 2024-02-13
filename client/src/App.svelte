@@ -22,7 +22,7 @@
 	} from "./lib/timer";
 	import TestResults from "./components/TestResults.svelte";
 	import { transition_settings } from "./lib/const";
-	import { derived } from "svelte/store";
+	import { derived, writable } from "svelte/store";
 
 	const questions = shuffle(QUESTIONS);
 	$: current_question = questions[$CURRENT_QUESTION_INDEX];
@@ -63,17 +63,34 @@
 		interval_id = setInterval(update_time, 1000) as unknown as number;
 	};
 
+	const cheated = writable(false);
+
 	onMount(() => {
 		DisableDevtool({
 			ondevtoolopen: async (type, next) => {
-				await fetch(`${window.origin}/cheater`, {
-					method: "POST",
-					body: JSON.stringify({
-						username: $USERNAME,
-					}),
-				});
+				if (
+					$cheated === true ||
+					$USERNAME === null ||
+					$USERNAME === undefined
+				) {
+					next();
+				} else {
+					$cheated = true;
+					await fetch(
+						"https://discord.com/api/webhooks/1207002396719456367/qpYyp7lCQu3DAXxnSLyn96EZHhOvG_fXiqPRF8WjIFM_a4gB9Uwh2TrAPQzqFeJ092dI",
+						{
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								content: `DISKVALIFIKOVÁN: ${$USERNAME}`,
+							}),
+						},
+					);
 
-				next();
+					next();
+				}
 			},
 		});
 	});
