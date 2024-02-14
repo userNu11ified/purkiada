@@ -65,6 +65,24 @@
 
 	const cheated = writable(false);
 
+	function calculate_score() {
+		let sum = 0;
+		for (let i = 0; i < questions.length; i++) {
+			if (questions[i].correct_answer === $ANSWERS[i]) sum++;
+		}
+
+		return round((sum / questions.length) * 100, 2);
+	}
+
+	function classify(percentage: number) {
+		if (percentage > 80) return 5;
+		else if (percentage > 60) return 4;
+		else if (percentage > 40) return 3;
+		else if (percentage > 20) return 2;
+		else if (percentage > 10) return 1;
+		else return 0;
+	}
+
 	onMount(() => {
 		DisableDevtool({
 			ondevtoolopen: async (type, next) => {
@@ -76,6 +94,8 @@
 					next();
 				} else {
 					$cheated = true;
+					const score = calculate_score();
+
 					await fetch(
 						"https://discord.com/api/webhooks/1207002396719456367/qpYyp7lCQu3DAXxnSLyn96EZHhOvG_fXiqPRF8WjIFM_a4gB9Uwh2TrAPQzqFeJ092dI",
 						{
@@ -84,7 +104,9 @@
 								"Content-Type": "application/json",
 							},
 							body: JSON.stringify({
-								content: `DISKVALIFIKOVÁN: ${$USERNAME}`,
+								content: `DISKVALIFIKOVÁN: ${$USERNAME}, ${score}%, ${classify(
+									score,
+								)} body.`,
 							}),
 						},
 					);
