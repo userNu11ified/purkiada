@@ -37,7 +37,7 @@
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					content: `${$USERNAME} dokončila test: ${percentage_correct}%, ${classify(
+					content: `${$USERNAME} dokončil test: ${percentage_correct}%, ${classify(
 						percentage_correct,
 					)} bodů.`,
 				}),
